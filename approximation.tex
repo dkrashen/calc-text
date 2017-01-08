@@ -1,0 +1,644 @@
+\chapter{Approximation}
+
+\section{Linear Approximation and Differentials}
+
+
+
+Given a function, a \textit{linear approximation} is a fancy phrase
+for something you already know.
+
+\begin{definition}\index{linear approximation}
+If $f(x)$ is a differentiable function at $x=a$, then a \textbf{linear
+  approximation} for $f(x)$ at $x=a$ is given by
+\[
+\l(x) = f'(a)(x-a) +f(a).
+\]
+\end{definition}
+
+A linear approximation of $f(x)$ is a good approximation of $f(x)$ as
+long as $x$ is ``not too far'' from $a$.  As we see from
+Figure~\ref{figure:informal-tangent}, if one can ``zoom in'' on $f(x)$
+sufficiently, then $f(x)$ and the linear approximation are nearly
+indistinguishable. Linear approximations allow us to make approximate
+``difficult'' computations.
+
+\begin{example}
+Use a linear approximation of $f(x) =\sqrt[3]{x}$ at $x=64$ to
+approximate $\sqrt[3]{50}$.
+\end{example}
+
+
+
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=1,xmax=100,ymin=0,ymax=5,
+            axis lines=center,
+            xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]        
+          \addplot [very thick, penColor, samples=150,smooth,domain=(0:100)] {x^(1/3))};
+          \addplot [very thick, penColor2, domain=(0:100)] {x/48+8/3};
+          \addplot [textColor,dashed] plot coordinates {(64,0) (64,4)};
+          \addplot [textColor,dashed] plot coordinates {(0,4) (64,4)};
+          \node at (axis cs:20,2.3) [penColor] {$f(x)$};
+          \node at (axis cs:20,3.3) [penColor2] {$\l(x)$};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(64,4)};  %% closed hole            
+        \end{axis}
+\end{tikzpicture}
+\caption{A linear approximation of $f(x) = \sqrt[3]{x}$ at $x=64$.}
+\label{figure:la sqrt3x}
+\end{marginfigure}
+
+
+\begin{solution}
+To start, write
+\[
+\ddx f(x) = \ddx x^{1/3} = \frac{1}{3x^{2/3}}.
+\]
+so our linear approximation is
+\begin{align*}
+\l(x) &= \frac{1}{3\cdot 64^{2/3}} (x-64) + 4 \\
+&= \frac{1}{48} (x-64) + 4\\
+&= \frac{x}{48} +\frac{8}{3}.
+\end{align*}
+Now we evaluate $\l(50) \approx 3.71$ and compare it to
+$\sqrt[3]{50}\approx 3.68$, see Figure~\ref{figure:la sqrt3x}. From
+this we see that the linear approximation, while perhaps inexact, is
+computationally \textbf{easier} than computing the cube root.
+\end{solution}
+
+With modern calculators and computing software it may not appear
+necessary to use linear approximations. But in fact they are quite
+useful. In cases requiring an explicit numerical approximation, they
+allow us to get a quick rough estimate which can be used as a
+``reality check'' on a more complex calculation. In some complex
+calculations involving functions, the linear approximation makes an
+otherwise intractable calculation possible, without serious loss of
+accuracy.
+
+
+
+
+\begin{example}%\label{exam:linear approximation of sine}
+Use a linear approximation of $f(x) =\sin(x)$ at $x=0$ to approximate
+$\sin(0.3)$.
+\end{example}
+
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=-1.6,xmax=1.6,ymin=-1.5,ymax=1.5,
+            axis lines=center,
+            xtick={-1.57, 0, 1.57},
+            xticklabels={$-\pi/2$, $0$, $\pi/2$},
+            ytick={-1,1},
+            %ticks=none,
+            %width=3in,
+            %height=2in,
+            unit vector ratio*=1 1 1,
+            xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]        
+          \addplot [very thick, penColor, samples=100,smooth, domain=(-1.6:1.6)] {sin(deg(x))};
+          \addplot [very thick, penColor2, samples=100,smooth] {x};
+          \node at (axis cs:1,.6) [penColor] {$f(x)$};
+          \node at (axis cs:-1,-1.2) [penColor2] {$\l(x)$};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(0,0)};  %% closed hole          
+        \end{axis}
+\end{tikzpicture}
+\caption{A linear approximation of $f(x) = \sin(x)$ at $x=0$.}
+\label{figure:la sin}
+\end{marginfigure}
+
+\begin{solution}
+To start, write
+\[
+\ddx f(x) = \cos(x),
+\]
+so our linear approximation is
+\begin{align*}
+\l(x) &= \cos(0)\cdot(x-0) + 0\\
+&= x.
+\end{align*}
+Hence a linear approximation for $\sin(x)$ at $x=0$ is $\l(x) = x$,
+and so $\l(0.3) = 0.3$.  Comparing this to $\sin(.3) \approx 0.295$. As
+we see the approximation is quite good. For this reason, it is common
+to approximate $\sin(x)$ with its linear approximation $\l(x) = x$
+when $x$ is near zero, see Figure~\ref{figure:la sin}.
+\end{solution}
+
+
+\subsection*{Differentials}
+
+The notion of a \textit{differential} goes back to the origins of
+calculus, though our modern conceptualization of a differential is
+somewhat different than how they were initially understood.
+
+\begin{definition}\index{differential}
+Let $f(x)$ be a differentiable function. We define a new
+  independent variable $dx$, and a new dependent variable
+\[
+dy=f'(x)\cdot dx.
+\] 
+The variables $dx$ and $dy$ are called \textbf{differentials}, see
+Figure~\ref{figure:differentials}.
+\end{definition}
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=1, xmax=2, range=0:6,ymax=6,ymin=0,
+            axis lines =left, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            ticks=none,
+            axis on top,
+          ]         
+	  \addplot [penColor2,very thick] plot coordinates {(1.4,10/6) (1.7,10/6)};
+          \addplot [penColor2,very thick] plot coordinates {(1.7,10/6) (1.7,10/6 +.3/.36)};
+          \addplot [penColor,dashed] plot coordinates {(1.4,10/6) (1.7,10/6 +.3/.36)};
+          \addplot [very thick,penColor, smooth,samples=100,domain=(0:1.833)] {-1/(x-2)};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(1.4,10/6)};  %% closed hole            
+          \node at (axis cs:1.55,1.67) [below, penColor2] {$dx$};
+          \node at (axis cs:1.7,2.08) [right, penColor2] {$dy$};
+        \end{axis}
+\end{tikzpicture}
+\caption{While $dy$ and $dx$ are both variables, $dy$ depends on $dx$,
+  and approximates how much a function grows after a change of size
+  $dx$ from a given point.}
+\label{figure:differentials}
+\end{marginfigure}
+
+Note, it is now the case (by definition!) that 
+\[
+\frac{dy}{dx} = f'(x).
+\]
+
+Essentially, differentials allow us to solve the problems presented in
+the previous examples from a slightly different point of view. Recall,
+when $h$ is near but not equal zero,
+\[
+f'(x) \approx \frac{f(x+h)-f(x)}{h}
+\]
+hence, 
+\[
+f'(x)h \approx f(x+h)-f(x)
+\]
+since $h$ is simply a variable, and $dx$ is simply a variable, we can replace $h$ with $dx$ to write
+\begin{align*}
+f'(x)\cdot dx &\approx f(x+dx)-f(x)\\
+dy &\approx f(x+dx)-f(x).
+\end{align*}
+From this we see that 
+\[
+f(x+dx)\approx dy + f(x).
+\]
+While this is something of a ``sleight of hand'' with variables, there
+are contexts where the language of differentials is common. We will
+repeat our previous examples using differentials.
+
+\begin{example}
+Use differentials to approximate $\sqrt[3]{50}$.
+\end{example}
+
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=1,xmax=100,ymin=2,ymax=5,
+            axis lines=center,
+            xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]        
+          \addplot [very thick, penColor, samples=150,smooth,domain=(0:100)] {x^(1/3))};
+          %\addplot [very thick, penColor2, domain=(50:64)] {x/48+8/3};
+          %\addplot [textColor,dashed] plot coordinates {(64,0) (64,4)};
+          \node at (axis cs:20,2.3) [penColor] {$f(x)$};
+          \addplot [penColor2,very thick] plot coordinates {(64,4) (64,3.71)};
+          \addplot [penColor2,very thick] plot coordinates {(50,3.71) (64,3.71)};
+          \node [below] at (axis cs:57,3.7) [penColor2] {$dx$};
+          \node [right] at (axis cs:64,3.8) [penColor2] {$dy$};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(64,4)};  %% closed hole            
+        \end{axis}
+\end{tikzpicture}
+\caption{A plot of $f(x) = \sqrt[3]{x}$  along with the differentials $dx$ and
+  $dy$.}
+\label{figure:diff sqrt3x}
+\end{marginfigure}
+
+
+\begin{solution}
+Since $4^3 = 64$ is a perfect cube near $50$, we will set $dx=-14$. In this case
+\[
+\frac{dy}{dx} = f'(x)  = \frac{1}{3x^{2/3}}
+\]
+hence 
+\begin{align*}
+dy &= \frac{1}{3x^{2/3}} \cdot dx\\
+&= \frac{1}{3\cdot64^{2/3}} \cdot(-14)\\
+&= \frac{1}{3\cdot64^{2/3}} \cdot(-14)\\
+&= \frac{-7}{24}
+\end{align*}
+Now $f(50) \approx f(64) + \frac{-7}{24} \approx 3.71$.
+\end{solution}
+
+
+\begin{example}
+Use differentials to approximate $\sin(0.3)$.
+\end{example}
+
+\begin{marginfigure}
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=-1.6,xmax=1.6,ymin=-1.5,ymax=1.5,
+            axis lines=center,
+            xtick={-1.57, 0, 1.57},
+            xticklabels={$-\pi/2$, $0$, $\pi/2$},
+            ytick={-1,1},
+            %ticks=none,
+            %width=3in,
+            %height=2in,
+            unit vector ratio*=1 1 1,
+            xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+          ]        
+          \addplot [very thick, penColor, samples=100,smooth, domain=(-1.6:1.6)] {sin(deg(x))};
+          %\addplot [very thick, penColor2, domain={0:0.3}] {x};
+          \addplot [penColor2,very thick] plot coordinates {(0,0) (.3,0)};
+          \addplot [penColor2,very thick] plot coordinates {(.3,0) (.3,.3)};
+          \node at (axis cs:1,.6) [penColor] {$f(x)$};
+          \node [below] at (axis cs:.15,.0) [penColor2] {$dx$};
+          \node [right] at (axis cs:.3,.15) [penColor2] {$dy$};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(0,0)};  %% closed hole          
+        \end{axis}
+\end{tikzpicture}
+\caption{A plot of $f(x) = \sin(x)$ along with the differentials $dx$ and
+  $dy$.}
+\label{figure:diff sin}
+\end{marginfigure}
+
+
+\begin{solution}
+Since $\sin(0) = 0$, we will set $dx=0.3$. In this case
+\[
+\frac{dy}{dx} = f'(x)  = \cos(x)
+\]
+hence 
+\begin{align*}
+dy &= \cos(0) \cdot dx\\
+&= 1 \cdot (0.3)\\
+&= 0.3
+\end{align*}
+Now $f(.3) \approx f(0) + 0.3 \approx 0.3$.
+\end{solution}
+
+The upshot is that linear approximations and differentials are simply
+two slightly different ways of doing the exact same thing.
+
+
+
+
+
+\begin{exercises}
+
+\begin{exercise}
+Use a linear approximation of $f(x) =\sin(x/2)$ at $x=0$ to approximate
+$f(0.1)$.
+\begin{answer}
+$\sin(0.1/2)\approx 0.05$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Use a linear approximation of $f(x) =\sqrt[3]{x}$ at $x=8$ to approximate
+$f(10)$.
+\begin{answer}
+$\sqrt[3]{10}\approx 2.17$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Use a linear approximation of $f(x) =\sqrt[5]{x}$ at $x=243$ to approximate
+$f(250)$.
+\begin{answer}
+$\sqrt[5]{250}\approx 3.017$
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise}
+Use a linear approximation of $f(x) =\ln(x)$ at $x=1$ to approximate
+$f(1.5)$.
+\begin{answer}
+$\ln(1.5)\approx 0.5$
+\end{answer}
+\end{exercise}
+
+\begin{exercise}
+Use a linear approximation of $f(x) =\ln(\sqrt{x})$ at $x=1$ to approximate
+$f(1.5)$.
+\begin{answer}
+$\ln(\sqrt{1.5})\approx 0.25$
+\end{answer}
+\end{exercise}
+
+
+\begin{exercise} 
+Let $f(x) = \sin(x/2)$. If $x=1$ and $dx=1/2$, what is $dy$?
+\begin{answer} $dy=0.22$
+\end{answer}\end{exercise}
+
+\begin{exercise} 
+Let $f(x) = \sqrt{x}$. If $x=1$ and $dx =1/10$, what is $dy$?
+\begin{answer} $dy=0.05$
+\end{answer}\end{exercise}
+
+\begin{exercise} 
+Let $f(x) = \ln(x)$. If $x=1$ and $dx =1/10$, what is $dy$?
+\begin{answer} $dy=0.1$
+\end{answer}\end{exercise}
+
+
+\begin{exercise} 
+Let $f(x) = \sin (2x)$. If $x=\pi$ and $dx=\pi/100$, what is $dy$?
+\begin{answer} $dy=\pi/50$
+\end{answer}\end{exercise}
+
+\begin{exercise} Use differentials to estimate the amount of paint needed to
+ apply a coat of paint 0.02 cm thick to a sphere with diameter $40$
+ meters. Hint: Recall that the volume of a sphere of radius $r$ is $V
+ =(4/3)\pi r^3$. Note that you are given that $dr=0.02$ cm.
+\begin{answer} $dV=8\pi/25 \text{m}^3$
+\end{answer}\end{exercise}
+
+\end{exercises}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Newton's Method}
+
+Suppose you have a function $f(x)$, and you want to solve $f(x)=0$.
+Solving equations symbolically is difficult. However, Newton's method
+gives us a procedure, for finding a solution to many equations to as
+many decimal places as you want.  
+
+\marginnote[.5in]{The point
+\[
+a_{n+1} = a_n - \frac{f(a_n)}{f'(a_n)}
+\]
+is the solution to the equation $\l_n(x) = 0$, where $\l_n(x)$ is the
+linear approximation of $f(x)$ at $x=a_n$.}
+
+\begin{newtonsMethod}
+Let $f(x)$ be a differentiable function and let $a_0$ be a
+guess for a solution to the equation
+\[
+f(x) = 0.
+\]
+We can produce a sequence of points $x=a_0, a_1, a_2, a_3, \dots$ via
+the recursive formula
+\[
+a_{n+1} = a_n -\frac{f(a_n)}{f'(a_n)}
+\]
+that (hopefully!) are successively better approximations of a solution
+to the equation $f(x) = 0$.
+\end{newtonsMethod}
+Let's see if we can explain the logic behind this method. Consider the
+following cubic function
+\[
+f(x) = x^3 - 4 x^2 - 5 x - 7.
+\]
+While there is a ``cubic formula'' for finding roots, it can be
+difficult to implement. Since it is clear that $f(10)$ is positive,
+and $f(0)$ is negative, by the Intermediate Value
+Theorem~\ref{theorem:IVT}, there is a solution to the equation $f(x) =
+0$ in the interval $[0,10]$. Let's compute $f'(x) = 3x^2 -8x-5$ and
+guess that $a_0=7$ is a solution. We can easily see that
+\[
+f(a_0) = f(7) = 105\qquad\text{and}\qquad f'(a_0) = f'(7) = 86.
+\]
+This might seem pretty bad, but if we look at the linear approximation
+of $f(x)$ at $x=7$, we find
+\begin{marginfigure}[-1in]
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=4, xmax=7.5,ymin=-40,ymax=125,domain=(4:8),
+            axis lines =center, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={7}, ytickmin=1,ytickmax=0,
+            xticklabels={$a_0$},
+            axis on top,
+          ]         
+	  \addplot [penColor2,very thick] {86*(x-7) + 105};
+          \addplot [textColor,dashed] plot coordinates {(7,0) (7,105)};
+          \addplot [very thick,penColor, smooth,samples=100] {x^3 - 4*x^2 - 5*x - 7};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(7,105)};  %% closed hole          
+        \end{axis}
+\end{tikzpicture}
+\caption{Here we see our first guess, along with the linear
+  approximation at that point.}
+\label{figure:newtonCubic1}
+\end{marginfigure}
+\[
+\l_0(x) = 86(x-7) + 105 \qquad\text{which is the same as}\qquad \l_0(x) = f'(a_0)(x-a_0) + f(a_0).
+\]
+Now $\l_0(a_1) = 0$ when
+\[
+a_1 = 7 - \frac{105}{86} \qquad\text{which is the same as}\qquad a_1 = a_0
+-\frac{f(a_0)}{f'(a_0)}.
+\]
+To remind you what is going on geometrically see
+Figure~\ref{figure:newtonCubic1}. Now we repeat the procedure letting
+$a_1$ be our new guess. Now
+\[
+f(a_1) \approx 23.5.
+\]
+We see our new guess is better than our first. If we look at the
+linear approximation of $f(x)$ at $x=a_1$, we find
+\[
+\l_1(x) = f'(a_1)(x-a_1) + f(a_1).
+\]
+Now $\l_1(a_2) = 0$ when
+\[
+a_2 = a_1 - \frac{f(a_1)}{f'(a_1)}.
+\]
+
+\begin{marginfigure}[-2in]
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=4, xmax=7.5,ymin=-40,ymax=125,domain=(4:8),
+            axis lines =center, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={5.78,7}, ytickmin=1,ytickmax=0,
+            xticklabels={$a_1$,$a_0$},
+            axis on top,
+          ]         
+	  \addplot [penColor2!40!background,very thick] {86*(x-7) + 105};
+          \addplot [textColor!40!background,dashed] plot coordinates {(7,0) (7,105)};
+          \addplot [penColor2,very thick] {49*x-259.4};
+          \addplot [textColor,dashed] plot coordinates {(5.78,0) (5.78,23.57)};
+          \addplot [very thick,penColor, smooth,samples=100] {x^3 - 4*x^2 - 5*x - 7};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(5.78,23.57)};  %% closed hole          
+        \end{axis}
+\end{tikzpicture}
+\caption{Here we see our second guess, along with the linear
+  approximation at that point.}
+\label{figure:newtonCubic2}
+\end{marginfigure}
+See Figure~\ref{figure:newtonCubic2} to see what is going on
+geometrically.  Again, we repeat our procedure letting $a_2$ be our
+next guess, note
+\[
+f(a_2) \approx 2.97,
+\]
+we are getting much closer to a root of $f(x)$. Looking at the linear
+approximation of $f(x)$ at $x=a_2$, we find
+\[
+\l_2(x) = f'(a_2)(x-a_2) + f(a_2).
+\]
+Setting $a_3 = a_2 - \frac{f(a_2)}{f'(a_2)}$, $a_3\approx 5.22$. We now
+have $\l_2(a_3) = 0$. Checking by evaluating $f(x)$ at $a_3$, we find
+\[
+f(a_3) \approx 0.14.
+\]
+
+\begin{marginfigure}[0in]
+\begin{tikzpicture}
+	\begin{axis}[
+            xmin=4, xmax=7.5,ymin=-40,ymax=125,domain=(4:8),
+            axis lines =center, xlabel=$x$, ylabel=$y$,
+            every axis y label/.style={at=(current axis.above origin),anchor=south},
+            every axis x label/.style={at=(current axis.right of origin),anchor=west},
+            xtick={5.22,5.78,7}, ytickmin=1,ytickmax=0,
+            xticklabels={$a_2$,$a_1$,$a_0$},
+            axis on top,
+          ]         
+	  \addplot [penColor2!40!background,very thick] {86*(x-7) + 105};
+          \addplot [textColor!40!background,dashed] plot coordinates {(7,0) (7,105)};
+
+          \addplot [penColor2!40!,very thick] {49*x-259.4};
+          \addplot [textColor!40!,dashed] plot coordinates {(5.78,0) (5.78,23.57)};
+
+          \addplot [penColor2,very thick] {36.8*x-192.2};
+          \addplot [textColor,dashed] plot coordinates {(5.22,0) (5.22,.14)};
+
+          \addplot [very thick,penColor, smooth,samples=100] {x^3 - 4*x^2 - 5*x - 7};
+          \addplot[color=penColor3,fill=penColor3,only marks,mark=*] coordinates{(5.22,.14)};  %% closed hole          
+        \end{axis}
+\end{tikzpicture}
+\caption{Here we see our third guess, along with the linear
+  approximation at that point.}
+\label{figure:newtonCubic3}
+\end{marginfigure}
+We are now very close to a root of $f(x)$, see
+Figure~\ref{figure:newtonCubic3}. This process, Newton's Method, could
+be repeated indefinitely to obtain closer and closer approximations to
+a root of $f(x)$.
+
+
+\begin{example}
+Use Newton's Method to approximate the solution to 
+\[
+x^3= 50
+\]
+to two decimal places. 
+\end{example}
+
+\begin{solution} 
+To start, set $f(x) = x^3 - 50$. We will use Newton's Method to
+approximate a solution to the equation
+\[
+f(x) = x^3-50 = 0. 
+\]
+Let's choose $a_0=4$ as our first guess. Now compute 
+\[
+f'(x) = 3x^2.
+\]
+At this point we can make a table:
+\[
+\begin{tchart}{llll}
+n &  a_n  & f(a_n)         & a_n - f(a_n)/f'(a_n)\\ \hline
+0 & 4    & 14             & \approx 3.708 \\
+1 & 3.708 & \approx 0.982  & \approx 3.684 \\
+2 & 3.684 & \approx -0.001 & \approx 3.684
+\end{tchart}
+\]
+Hence after only two iterations, we have the solution to three (and
+hence two) decimal places.
+\end{solution}
+
+In practice, which is to say, if you need to approximate a value in
+the course of designing a bridge or a building or an airframe, you
+will need to have some confidence that the approximation you settle on
+is accurate enough. As a rule of thumb, once a certain number of
+decimal places stop changing from one approximation to the next it is
+likely that those decimal places are correct. Still, this may not be
+enough assurance, in which case we can test the result for accuracy.
+
+
+Sometimes questions involving Newton's Method do not mention an
+equation that needs to be solved. Here you must reinterpret the
+question as one that is asking for a solution to an equation of the
+form $f(x) = 0$.
+
+\begin{example}
+Use Newton's Method to approximate $\sqrt[3]{50}$ to two decimal
+places.
+\end{example}
+
+\begin{solution}
+The $\sqrt[3]{50}$ is simply a solution to the equation
+\[
+x^3 -50 = 0.
+\]
+Since we did this in the previous example, we have found
+$\sqrt[3]{50}\approx 3.68$.
+\end{solution}
+
+\begin{warning}
+Sometimes a bad choice for $a_0$ will not lead to a root. Consider 
+\[
+f(x) = x^3 - 3 x^2 - x - 4.
+\]
+If we choose our initial guess to be $a_0=1$ and make a table we find:
+\[
+\begin{tchart}{llll}
+n &  a_n  & f(a_n)         & a_n - f(a_n)/f'(a_n)\\ \hline
+0 & 1    & -7             & -0.75 \\
+1 & -0.75 & \approx -5.359  & \approx 0.283 \\
+2 & 0.283 & \approx -4.501 & \approx -1.548 \\
+3 & -1.548 & \approx -13.350 & \approx -0.685 \\
+4 & -0.685 & \approx -5.044 & \approx 0.432 \\
+  \hdotsfor{4}
+\end{tchart}
+\]
+As you can see, we are not converging to a root, which is
+approximately $x=3.589$.
+\end{warning}
+
+
+
+Iterative procedures like Newton's method are well suited for
+computers. It enables us to solve equations that are otherwise
+impossible to solve through symbolic methods.
+
+
+
+
+
+
