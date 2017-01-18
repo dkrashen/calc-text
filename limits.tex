@@ -861,6 +861,44 @@ close to $a$ but not necessarily equal to $a$. If
 then $\lim_{x\to a} f(x) = L$.
 \end{mainTheorem}
 
+Let's look at an example of how the squeeze Theorem can be used.
+
+\begin{example}\label{example:squeeze}
+Compute
+\[
+\lim_{x\to 1} (1 - x)^2 \sin^2 x
+\]
+\end{example}
+
+\break
+
+\begin{solution}
+To compute this limit, use the Squeeze Theorem,
+Theorem~\ref{theorem:squeeze}. In order to apply this Theorem, we need to
+find two new functions ($g(x)$ and $h(x)$ in the statement of the Theorem)
+so that $g(x) \leq (1 - x)^2 \sin^2 x \leq h(x)$, and so that we can
+compute both $g(x)$ and $h(x)$ having the same limit as $x$ approaches $1$.
+In our example, we do this by noticing that because the sine of any angle
+is between $-1$ and $1$, it follows that $0 \leq \sin^2 x \leq 1$ for any
+value of $x$. In particular, multiplying these inequalities through by $(1
+- x)^2$, we find 
+\[ 0 \leq (1 - x)^2 \sin^2 x \leq (1 - x)^2. \]
+We then compute
+\[ \lim_{x \to 1} 0 = 0 \ \ \ \lim_{x \to 1} (1 - x)^2 = 0, \]
+and so, by the squeeze Theorem, we conclude that
+\[\lim_{x \to 1} (1 - x)^2 \sin^2 x = 0 \]
+as well.
+\end{solution}
+
+It's good to keep in mind that there is no ``standard procedure'' for
+producing these functions $g(x)$ and $h(x)$. In some cases, inequalities
+such as $-1 \leq \sin x \leq 1$ or $0 \leq \sin^2 x \leq 1$ can be useful
+for this purpose, however, there are many other examples which don't follow
+this pattern.
+
+Our next example will prove to be of critical importance later on in
+dealing with trigonometric functions.
+
 \marginnote[.2in]{For a nice discussion of this limit, see: Richman,
   Fred. \textit{A circular argument}. College Math. J. 24 (1993),
   no. 2, 160--162.}
